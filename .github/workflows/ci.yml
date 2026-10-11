@@ -15,14 +15,21 @@ jobs:
     - name: Build Project
       run: dotnet build src
     - name: Run .NET tests
-      run: dotnet test test --results-directory "test-results" --collect:"Code Coverage"
+      run: dotnet test test --logger "trx" --results-directory "test-results" --collect:"Code Coverage"
     - name: Gather Coverage Reports
       run: dotnet tool exec dotnet-coverage merge --output test-result.cobertura.xml --output-format cobertura "test-results/**/*.coverage"
     - name: DocFx Build Validation
       run: dotnet tool exec docfx docs/docfx.json
     - name: Code Coverage Report
       run: dotnet tool exec dotnet-reportgenerator-globaltool -reports:"test-result.cobertura.xml" -targetdir:"coverage-report" -reporttypes:MarkdownSummaryGithub
-    - name: Report Coverage in Action
+    - name: Report Test Results 
+      uses: dorny/test-reporter@v3
+      if: ${{ !cancelled() }}       # run this step even if previous step failed
+      with:
+        name: DotNet Tests
+        path: test-results/*.trx
+        reporter: dotnet-trx 
+    - name: Report Coverage Results
       run: cat coverage-report/SummaryGithub.md >> $GITHUB_STEP_SUMMARY
     - name: Add Coverage PR Comment
       uses: marocchino/sticky-pull-request-comment@v2
