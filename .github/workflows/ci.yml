@@ -23,7 +23,7 @@ jobs:
     - name: Code Coverage Report
       run: dotnet tool exec dotnet-reportgenerator-globaltool -reports:"test-result.cobertura.xml" -targetdir:"coverage-report" -reporttypes:MarkdownSummaryGithub
     - name: Report Coverage in Action
-      run: cat coverage-report/SummaryGithub.md
+      run: cat coverage-report/SummaryGithub.md >> $GITHUB_STEP_SUMMARY
     - name: Add Coverage PR Comment
       uses: marocchino/sticky-pull-request-comment@v2
       if: github.event_name == 'pull_request'
