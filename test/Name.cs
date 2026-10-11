@@ -15,7 +15,7 @@ public class Tests
     [Test]
     public void NoFirstNamePasses()
     {
-	Name n = new Name(null, "Smith");
+	Name n = new Name(null!, "Smith");
 	NameValidator validator = new NameValidator();
 	var result = validator.Validate(n);
 	Assert.That(result.IsValid, Is.True);
@@ -23,7 +23,7 @@ public class Tests
     [Test]
     public void NoLastNameFails()
     {
-	Name n = new Name("John", null);
+	Name n = new Name("John", null!);
 	NameValidator validator = new NameValidator();
 	var result = validator.Validate(n);
 	Assert.That(result.IsValid, Is.False);
