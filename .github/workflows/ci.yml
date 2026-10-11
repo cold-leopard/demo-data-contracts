@@ -21,7 +21,7 @@ jobs:
     - name: DocFx Build Validation
       run: dotnet tool exec docfx docs/docfx.json
     - name: Code Coverage Report
-      run: dotnet tool exec dotnet-reportgenerator-globaltool -reports:"test-result.cobertura.xml" -targetdir:"coverage-report" -reporttypes:SummaryGithub
+      run: dotnet tool exec dotnet-reportgenerator-globaltool -reports:"test-result.cobertura.xml" -targetdir:"coverage-report" -reporttypes:MarkdownSummaryGithub
     - name: Report Coverage in Action
       run: cat coverage-report/SummaryGithub.md
     - name: Add Coverage PR Comment
