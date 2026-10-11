@@ -17,4 +17,4 @@ jobs:
     - name: Run .NET tests
       run: dotnet test test
     - name: DocFx Build Validation
-      run: dotnet tool run docfx docs/docfx.json
+      run: dotnet tool exec docfx docs/docfx.json
