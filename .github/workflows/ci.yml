@@ -2,7 +2,7 @@ on:
   push
 
 jobs:
-  test:
+  build:
     name: CI
     runs-on: ubuntu-latest
     steps:
@@ -18,11 +18,26 @@ jobs:
       run: dotnet test test --results-directory "test-results" --collect:"Code Coverage"
     - name: Gather Coverage Reports
       run: dotnet tool exec dotnet-coverage merge --output test-result.cobertura.xml --output-format cobertura "test-results/**/*.coverage"
-    - name: Upload coverage report
-      uses: actions/upload-code-coverage@v1
-      with:
-        file: test-result.cobertura.xml
-        language: C#
-        label: code-coverage/demo-data-contracts
     - name: DocFx Build Validation
       run: dotnet tool exec docfx docs/docfx.json
+    - name: Upload Coverage Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: cobertura-report
+        path: test-result.cobertura.xml
+  upload-coverage:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      code-quality: write
+      pull-requests: read
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: cobertura-report
+      - uses: actions/upload-code-coverage@v1
+        with:
+          file: cobertura.xml
+          language: C#
+          label: code-coverage/demo-data-contracts
