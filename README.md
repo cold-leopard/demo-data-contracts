@@ -1,7 +1,9 @@
+<!--
 ---
 outputFileName: index.html
 _layout: landing
 ---
+-->
 
 # Data Contracts Library
 
