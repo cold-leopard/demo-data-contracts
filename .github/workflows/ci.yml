@@ -15,14 +15,14 @@ jobs:
     - name: Build Project
       run: dotnet build src
     - name: Run .NET tests
-      run: dotnet test test --collect:"XPlat Code Coverage"
+      run: dotnet test test --results-directory "test-results" --collect:"Code Coverage"
+    - name: Gather Coverage Reports
+      run: dotnet tool exec dotnet-coverage merge --output test-result.cobertura.xml --output-format cobertura "test-results/**/*.coverage"
     - name: Upload coverage report
       uses: actions/upload-code-coverage@v1
       with:
-        file: test/TestResults/*/coverage.cobertura.xml
-
+        file: test-result.cobertura.xml
         language: C#
         label: code-coverage/demo-data-contracts
-
     - name: DocFx Build Validation
       run: dotnet tool exec docfx docs/docfx.json
