@@ -1,0 +1,20 @@
+on:
+  push
+
+jobs:
+  test:
+    name: CI
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v7
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v6
+      with:
+        dotnet-version: '10.0.x'
+    - name: Build Project
+      run: dotnet build src
+    - name: Run .NET tests
+      run: dotnet test test
+    - name: DocFx Build Validation
+      run: dotnet tool exec docfx docs/docfx.json
