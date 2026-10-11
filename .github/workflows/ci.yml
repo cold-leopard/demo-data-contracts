@@ -27,7 +27,7 @@ jobs:
       if: ${{ !cancelled() }}       # run this step even if previous step failed
       with:
         name: DotNet Tests
-        path: test/TestResults/**/*.trx
+        path: test-results/*.trx
         reporter: dotnet-trx 
     - name: Report Coverage Results
       run: cat coverage-report/SummaryGithub.md >> $GITHUB_STEP_SUMMARY
