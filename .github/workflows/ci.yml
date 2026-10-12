@@ -42,7 +42,7 @@ jobs:
       if: github.event_name == 'pull_request'
       with:
         recreate: true
-        path: ${{ steps.test-report.outputs.summary }}
+        path: ${{ steps.test-report.outputs.summary_file }}
     - name: Report Coverage Results
       run: cat coverage-report/SummaryGithub.md >> $GITHUB_STEP_SUMMARY
     - name: Add Coverage PR Comment
