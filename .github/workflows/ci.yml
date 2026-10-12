@@ -30,12 +30,19 @@ jobs:
     - name: Code Coverage Report
       run: dotnet tool exec dotnet-reportgenerator-globaltool -reports:"test-result.cobertura.xml" -targetdir:"coverage-report" -reporttypes:MarkdownSummaryGithub
     - name: Report Test Results 
+      id: test-report
       uses: dorny/test-reporter@v3
       if: ${{ !cancelled() }}       # run this step even if previous step failed
       with:
         name: DotNet Tests
         path: test-results/*.trx
         reporter: dotnet-trx 
+    - name: Add Test Results PR Comment
+      uses: marocchino/sticky-pull-request-comment@v2
+      if: github.event_name == 'pull_request'
+      with:
+        recreate: true
+        path: ${{ steps.test-report.outputs.summary }}
     - name: Report Coverage Results
       run: cat coverage-report/SummaryGithub.md >> $GITHUB_STEP_SUMMARY
     - name: Add Coverage PR Comment
