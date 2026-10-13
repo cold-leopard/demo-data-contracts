@@ -8,10 +8,8 @@ on:
 
 jobs:
   build:
-    name: CI
+    name: Code
     runs-on: ubuntu-latest
-    permissions:
-      pull-requests: write
     steps:
     - name: Checkout
       uses: actions/checkout@v7
@@ -23,19 +21,53 @@ jobs:
       run: dotnet build src
     - name: Run .NET tests
       run: dotnet test test --logger "trx" --results-directory "test-results" --collect:"Code Coverage"
-    - name: Gather Coverage Reports
+      continue-on-error: true
+    - name: Archive test results
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-report
+        path: test-results/*.trx
+    - name: Gather Coverage Results    
       run: dotnet tool exec dotnet-coverage merge --output test-result.cobertura.xml --output-format cobertura "test-results/**/*.coverage"
+    - name: Archive code coverage results
+      uses: actions/upload-artifact@v4
+      with:
+        name: coverage-report
+        path: "test-result.cobertura.xml"
+
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v7
     - name: DocFx Build Validation
       run: dotnet tool exec docfx docs/docfx.json
-    - name: Code Coverage Report
+      
+  test_reports:
+    name: Display Test Reports
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v7
+    - name: Download test report
+      uses: actions/download-artifact@v5
+      with:
+        name: test-report
+    - name: Download coverage report
+      uses: actions/download-artifact@v5
+      with:
+        name: coverage-report
+    - name: Create Coverage Report
       run: dotnet tool exec dotnet-reportgenerator-globaltool -reports:"test-result.cobertura.xml" -targetdir:"coverage-report" -reporttypes:MarkdownSummaryGithub
     - name: Report Test Results 
       id: test-report
       uses: dorny/test-reporter@v3
-      if: ${{ !cancelled() }}       # run this step even if previous step failed
       with:
         name: DotNet Tests
-        path: test-results/*.trx
+        path: ./*.trx
         reporter: dotnet-trx 
     - name: Add Test Results PR Comment
       uses: marocchino/sticky-pull-request-comment@v2
