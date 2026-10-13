@@ -38,6 +38,8 @@ jobs:
   docs:
     runs-on: ubuntu-latest
     steps:
+    - name: Checkout
+      uses: actions/checkout@v7
     - name: DocFx Build Validation
       run: dotnet tool exec docfx docs/docfx.json
       
@@ -48,6 +50,8 @@ jobs:
     permissions:
       pull-requests: write
     steps:
+    - name: Checkout
+      uses: actions/checkout@v7
     - name: Download test report
       uses: actions/download-artifact@v5
       with:
