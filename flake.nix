@@ -20,7 +20,13 @@
       devShells = forAllSystems
 	({ pkgs }: {
 	  default = pkgs.mkShell {
-	    buildInputs = with pkgs; [ zsh just dotnet-sdk_10 docfx];
+	    buildInputs = with pkgs; [
+	      zsh
+	      just
+	      dotnet-sdk_10
+	      docfx
+	      nodejs
+	    ];
 	    
 	    shellHook = ''
 	      zsh
