@@ -14,7 +14,7 @@ public class Tests
     [Test]
     public void CustomerCorrect()
     {
-	Customer c = new Customer(123, "John", "Smith");
+	Customer c = new Customer(12, "John", "Smith");
 	var result = validator.Validate(c);
 	Assert.That(result.IsValid, Is.True);
     }
