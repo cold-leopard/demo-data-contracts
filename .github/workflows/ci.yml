@@ -63,7 +63,7 @@ jobs:
       uses: dorny/test-reporter@v3
       with:
         name: DotNet Tests
-        path: *.trx
+        path: ./*.trx
         reporter: dotnet-trx 
     - name: Add Test Results PR Comment
       uses: marocchino/sticky-pull-request-comment@v2
