@@ -47,3 +47,13 @@ This project uses [SemVer 2.0](https://semver.org/) managed automatically by [Se
 Tests are located in the [test](./test/) folder, and can be run using `just test` if user has
 [just](https://github.com/casey/just) installed.
 
+### Git Hooks
+
+Git Hooks are configured via Husky. Can configure Husky for your repo using `just prepare`
+
+### Commits
+
+Commits are standardized using Commitizen and CommitLint. Using `just commit` will
+initialize an interactive `Commitizen` prompt to write your commit message. Commits
+that fail to follow the desired format will be rejected by Git hooks locally, or
+else by the CI pipeline
