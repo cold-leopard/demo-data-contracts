@@ -3,4 +3,6 @@ test:
 docs:
     docfx docs/docfx.json --serve
 commit:
-    npm run commit
+    npx git-cz
+prepare:
+    npx husky
