@@ -1,10 +1,3 @@
-<!--
----
-outputFileName: index.html
-_layout: landing
----
--->
-
 # Data Contracts Library
 
 This library defines common structs and DTOs, and provides formatting validation
